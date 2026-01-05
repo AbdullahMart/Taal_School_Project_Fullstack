@@ -1,0 +1,5 @@
+Backend  → cd .\backend-api\
+                             node index.js
+
+React  → cd .\App_db\
+                        npm run dev
