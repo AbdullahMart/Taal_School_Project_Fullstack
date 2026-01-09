@@ -138,5 +138,6 @@ npm run dev
 - Node sürümü uyuşmazlığı: LTS (18.x/20.x) kullanın.
 
 Abdullah Mart
+
 Balarilar dilerim...
 
