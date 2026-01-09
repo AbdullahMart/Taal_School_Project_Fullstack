@@ -13,7 +13,7 @@ Bu depo, basit bir React (Vite) ön yüzü ve Node.js (Express) tabanlı bir bac
 
 ---
 
-## 1) Depoyu İndirme
+## 1) Repoyu İndirme
 1. Git ile (tercih edilir):
 
 ```bash
@@ -26,37 +26,7 @@ cd Taal_School_Project_Fullstack
 Not: Git bilginiz yoksa GitHub sayfasından **Code → Download ZIP** ile indirebilirsiniz; zip'i açıp aynı klasöre gelin.
 
 ---
-
-## 2) Backend (API) kurulumu ve çalıştırma 🔧
-1. Backend dizinine gidin:
-
-- Repo kökünden (kısa):
-
-```bash
-cd backend-api
-```
-
-- Windows PowerShell ile (tam yol örneği):
-
-```powershell
-cd 'C:\Users\abdul\Documents\GitHub\Taal_School_Project_Fullstack\backend-api'; npm install
-```
-
-2. Bağımlılıkları yükleyin:
-
-```bash
-npm install
-```
-
-> Not: Eğer `Error: Cannot find module '...\index.js'` gibi bir hata görürseniz, muhtemelen `node index.js` komutunu yanlış klasörden çalıştırdınız; ya `cd backend-api` ile doğru klasöre geçin ya da tam dosya yolunu kullanarak çalıştırın:
-
-```bash
-node "C:\Users\abdul\Documents\GitHub\Taal_School_Project_Fullstack\backend-api\index.js"
-```
-
-3. MySQL veritabanını oluşturun ve örnek tablo ekleyin (MySQL komut satırında veya bir GUI ile çalıştırın):
-
-
+2. MySQL veritabanını oluşturun ve örnek tablo ekleyin (MySQL komut satırında veya bir GUI ile çalıştırın):
 
 ### MySQL Workbench veya CLI ile SQL dosyalarını yükleme 📥
 Aşağıdaki adımları izleyerek `app_db-schema.sql` (şema) ve `app_db-data.sql` (örnek veriler) dosyalarını yükleyin. **Önce şema**, sonra **veri** dosyasını çalıştırın.
@@ -67,29 +37,20 @@ A. MySQL Workbench ile (grafiksel):
 3. Sağ üstteki ⚡ (Execute) butonuna veya Ctrl+Shift+Enter ile script'i çalıştırın. `Schemas` bölümünde `app_db` görünmelidir.
 4. Aynı şekilde **File → Open SQL Script** ile `app_db-data.sql` dosyasını açın ve çalıştırın. Veriler `app_question_body` tablosuna eklenecektir.
 
-B. Komut satırı (PowerShell veya CMD):
-- PowerShell örneği (tam yol kullanımı):
 
-```powershell
-mysql -u root -p < "C:\path\to\app_db-schema.sql"
-mysql -u root -p < "C:\path\to\app_db-data.sql"
-```
-
-- Not: `-p` parametresi sizden şifre isteyecektir; şifre girildikten sonra script çalışır.
-
-C. Kontrol
+B. Kontrol
 - Workbench'te `Schemas → app_db → Tables → app_question_body` altında kayıtları görebilirsiniz.
-- Terminalde test için:
+- Workbanch SQL Query (Test için):
 
-```bash
-curl http://localhost:3001/api/questions
-```
+---Query icine Test icin yazabilirsin.---
 
+select * 
+from app_db.app_question_body;
 
-```
+-------------------------------------------
 
-4. MySQL bağlantı bilgilerini kontrol edin:
-- Varsayılan `backend-api/index.js` içindeki bağlantı bilgileri örnektir; kendi MySQL kullanıcı/parolanızı kullanın. Dosyayı açıp şu bölümü bulun ve düzenleyin:
+3. MySQL bağlantı bilgilerini kontrol edin:
+- Varsayılan `backend-api/index.js` içindeki bağlantı bilgileri örnektir; kendi MySQL kullanıcı/parolanızı kullanın. `backend-api/index.js` dosyasini açıp şu bölümü bulun ve düzenleyin:
 
 ```js
 const db = mysql.createConnection({
@@ -100,25 +61,43 @@ const db = mysql.createConnection({
 });
 ```
 
-> İpucu: Güvenlik için gerçek projelerde **şifreleri repoya koymayın**; `.env` kullanın ve `dotenv` paketini tercih edin.
+> İpucu: Güvenlik için gerçek projelerde **şifreleri repoya koymayın**; `.env` kullanın.
 
-5. API'yi başlatın:
+
+## 3) Backend (API) kurulumu ve çalıştırma 🔧
+
+A. backend-api dizinine gidin:
+- Kökten (kısa):
+
+```bash
+cd backend-api
+```
+
+
+
+B. API'yi başlatın:
 
 ```bash
 node index.js
 ```
 
-- Başarılıysa: `🚀 API çalışıyor: http://localhost:3001` ve `✅ MySQL bağlantısı başarılı!` göreceksiniz.
-- Test etmek için tarayıcıda veya terminalde:
+> Not: Eğer `Error: Cannot find module '...\index.js'` gibi bir hata görürseniz, muhtemelen `node index.js` komutunu yanlış klasörden çalıştırdınız; ya `cd backend-api` ile doğru klasöre geçin ya da tam dosya yolunu kullanarak çalıştırın:
 
-```bash
-curl http://localhost:3001/api/questions
+
+
+- Başarılıysa: `🚀 API çalışıyor: http://localhost:3001` ve `✅ MySQL bağlantısı başarılı!` göreceksiniz.
+
+- Sql server'dan verilerin gelip gelmedigini test etmek icin :
+
+```web browser (Chrome veya edge vs.)
+
+Url: http://localhost:3001/api/questions
 ```
 
 ---
 
-## 3) Frontend (React + Vite) kurulumu ve çalıştırma 🌐
-1. Frontend dizinine gidin:
+## 4) Frontend (React + Vite) kurulumu ve çalıştırma 🌐
+A. Vs Code ile yeni Terminal acin. Backen-api terminalini kapatmayin. Acilan yeni terminalde Frontend dizinine gidin:
 
 - Repo kökünden (kısa):
 
@@ -126,13 +105,9 @@ curl http://localhost:3001/api/questions
 cd app_db/App_db
 ```
 
-- Windows PowerShell ile (tam yol örneği ):
 
-```powershell
-cd 'C:\Users\abdul\Documents\GitHub\Taal_School_Project_Fullstack\app_db\App_db'; npm install
-```
 
-2. Bağımlılıkları yükleyin:
+B. Bağımlılıkları yükleyin:
 
 ```bash
 npm install
@@ -140,7 +115,7 @@ npm install
 
 > İpucu: Eğer `npm install` komutunu yanlış üst klasörde çalıştırırsanız, bağımlılıklar `app_db` kökünde ya da başka bir yerde kurulabilir; doğru klasörde (`app_db/App_db`) olduğunuzdan emin olun.
 
-3. Geliştirme sunucusunu başlatın:
+C. Geliştirme sunucusunu başlatın:
 
 - Kısa yol:
 
@@ -148,11 +123,6 @@ npm install
 npm run dev
 ```
 
-- Ya da tek satır PowerShell örneği (kökten tam yolu kullanarak):
-
-```powershell
-cd 'C:\Users\abdul\Documents\GitHub\Taal_School_Project_Fullstack\app_db\App_db'; npm run dev
-```
 
 - Vite genellikle `http://localhost:5173/` adresini verecektir. Tarayıcıda açın.
 - Frontend otomatik olarak backend API'sine `http://localhost:3001/api/questions` endpoint'inden istek atarak verileri çekmelidir (CORS zaten etkin).
@@ -167,7 +137,6 @@ cd 'C:\Users\abdul\Documents\GitHub\Taal_School_Project_Fullstack\app_db\App_db'
 - Eksik paketler: `npm install` komutunu ilgili dizinde çalıştırdığınızdan emin olun.
 - Node sürümü uyuşmazlığı: LTS (18.x/20.x) kullanın.
 
+Abdullah Mart
+Balarilar dilerim...
 
-
-
-                     
