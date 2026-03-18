@@ -34,17 +34,17 @@ const mapData = [
 ];
 
 const studentData = [
-  { name: 'Bachelor', count: 850, color: '#3b82f6' },
-  { name: 'Master', count: 420, color: '#8b5cf6' },
-  { name: 'PhD', count: 120, color: '#ec4899' },
-  { name: 'High School', count: 230, color: '#f59e0b' },
+  { name: 'Bachelor', count: 850, color: '#4f46e5' }, // Indigo-600
+  { name: 'Master', count: 420, color: '#06b6d4' },   // Cyan-500
+  { name: 'PhD', count: 120, color: '#8b5cf6' },      // Violet-500
+  { name: 'High School', count: 230, color: '#f59e0b' }, // Amber-500
 ];
 
 const techData = [
-  { name: 'Cloud/AWS', count: 450, color: '#0ea5e9' },
-  { name: 'Python/AI', count: 320, color: '#10b981' },
-  { name: 'React/Web', count: 280, color: '#6366f1' },
-  { name: 'Data Sci', count: 210, color: '#f59e0b' },
+  { name: 'Cloud/AWS', count: 450, color: '#4f46e5' }, // Indigo-600
+  { name: 'Python/AI', count: 320, color: '#06b6d4' }, // Cyan-500
+  { name: 'React/Web', count: 280, color: '#f59e0b' }, // Amber-500
+  { name: 'Data Sci', count: 210, color: '#ec4899' },  // Pink-500
 ];
 
 const DashboardStats = () => {
@@ -67,8 +67,8 @@ const DashboardStats = () => {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-12 relative">
       {/* Snackbar */}
       {snackbar.show && (
-        <div className="fixed bottom-10 left-1/2 -translate-x-1/2 z-50 animate-in slide-in-from-bottom fade-in duration-300">
-          <div className="bg-slate-900/95 backdrop-blur-2xl text-white px-8 py-5 rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.3)] flex items-center gap-6 border border-white/10 ring-1 ring-white/20">
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 z-[100] animate-in slide-in-from-top fade-in duration-500">
+          <div className="bg-slate-900/90 backdrop-blur-3xl text-white px-8 py-5 rounded-[2.5rem] shadow-[0_25px_60px_-15px_rgba(0,0,0,0.5)] flex items-center gap-6 border border-white/10 ring-1 ring-white/10">
             <div className="w-16 h-16 bg-linear-to-br from-slate-800 to-slate-900 rounded-2xl flex items-center justify-center shadow-lg overflow-hidden border border-white/10">
               <ReactCountryFlag 
                 countryCode={snackbar.code} 
@@ -101,30 +101,39 @@ const DashboardStats = () => {
           </div>
           <div className="flex gap-4">
             <div className="flex items-center gap-2 bg-slate-50 px-4 py-2 rounded-xl border border-slate-100">
-              <span className="w-3 h-3 bg-orange-500 rounded-full"></span>
+              <span className="w-3 h-3 bg-indigo-500 rounded-full"></span>
               <span className="text-xs font-bold text-slate-600 uppercase tracking-wider">Active Hubs</span>
             </div>
           </div>
         </div>
         
-        <div className="flex-1 bg-linear-to-b from-slate-50 to-white rounded-3xl overflow-hidden border border-slate-100 relative shadow-inner">
+        <div className="flex-1 bg-[#001f3f] rounded-3xl overflow-hidden border border-white/5 relative shadow-2xl">
           <div className="absolute inset-0 flex items-center justify-center -mt-20">
             <ComposableMap projectionConfig={{ scale: 120, center: [10, 0] }} style={{ width: "110%", height: "auto" }}>
               <Geographies geography={geoUrl}>
                 {({ geographies }) =>
-                  geographies.map((geo) => (
-                    <Geography
-                      key={geo.rsmKey}
-                      geography={geo}
-                      fill="#F1F5F9"
-                      stroke="#CBD5E1"
-                      strokeWidth={0.8}
-                      style={{
-                        default: { outline: "none" },
-                        hover: { fill: "#E2E8F0", outline: "none", transition: 'all 250ms' },
-                      }}
-                    />
-                  ))
+                  geographies.map((geo) => {
+                    const isHighlighted = mapData.some(d => 
+                      d.name === geo.properties.name || 
+                      d.code === geo.properties.ISO_A2 || 
+                      d.name === geo.properties.SOVEREIGNT ||
+                      (geo.properties.name === "United States of America" && d.name === "USA")
+                    );
+                    return (
+                      <Geography
+                        key={geo.rsmKey}
+                        geography={geo}
+                        fill={isHighlighted ? "#0074D9" : "transparent"}
+                        stroke="#ffffff"
+                        strokeWidth={0.5}
+                        strokeOpacity={0.3}
+                        style={{
+                          default: { outline: "none" },
+                          hover: { fill: "#39CCCC", outline: "none", transition: 'all 250ms' },
+                        }}
+                      />
+                    );
+                  })
                 }
               </Geographies>
               {mapData.map(({ name, coordinates, count, code }) => (
@@ -134,16 +143,11 @@ const DashboardStats = () => {
                   onClick={() => handleMarkerClick(name, code)}
                   style={{ cursor: 'pointer' }}
                 >
-                  <g className="filter drop-shadow-lg scale-125">
-                    <circle 
-                      r={Math.sqrt(count) / 2.5} 
-                      fill="#EA580C" 
-                      fillOpacity={0.8}
-                      stroke="#fff" 
-                      strokeWidth={3}
-                      className="hover:fill-orange-400 transition-all hover:scale-150 focus:outline-none animate-pulse-slow"
-                    />
-                  </g>
+                  <circle 
+                    r={3} 
+                    fill="#ffffff" 
+                    className="animate-pulse"
+                  />
                   <title>{`${name}: ${count} Students`}</title>
                 </Marker>
               ))}
