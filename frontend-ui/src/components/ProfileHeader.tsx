@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, LogOut, Settings, ChevronDown, Bell } from 'lucide-react';
+import { User, Settings, ChevronDown, Bell, LogOut } from 'lucide-react';
 
 interface ProfileHeaderProps {
   user: { full_name: string; email: string } | null;
@@ -28,6 +28,15 @@ const ProfileHeader = ({ user, onLogout }: ProfileHeaderProps) => {
         <button className="relative text-gray-500 hover:text-orange-600 transition-colors p-2 bg-white rounded-full shadow-sm hover:shadow-md">
           <Bell size={20} />
           <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white animate-pulse"></span>
+        </button>
+
+        {/* Logout Butonu */}
+        <button
+          onClick={onLogout}
+          className="text-gray-500 hover:text-red-600 transition-colors p-2 bg-white rounded-full shadow-sm hover:shadow-md hover:bg-red-50"
+          title="Logout"
+        >
+          <LogOut size={20} />
         </button>
 
         {/* Profil Kısmı */}
@@ -68,17 +77,7 @@ const ProfileHeader = ({ user, onLogout }: ProfileHeaderProps) => {
                 <span className="font-semibold tracking-tight">Settings</span>
               </button>
               
-              <div className="h-px bg-gray-50 my-1 mx-2"></div>
-              
-              <button 
-                onClick={onLogout}
-                className="w-full flex items-center space-x-3 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition-colors group"
-              >
-                <div className="p-1.5 bg-red-50 group-hover:bg-red-100 rounded-lg transition-colors">
-                  <LogOut size={16} />
-                </div>
-                <span className="font-bold tracking-tight">Sign Out</span>
-              </button>
+
             </div>
           )}
         </div>

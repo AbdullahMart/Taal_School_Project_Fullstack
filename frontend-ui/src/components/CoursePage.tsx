@@ -38,7 +38,7 @@ const CoursePage = () => {
   );
 
   return (
-    <div className="p-8 space-y-8 animate-in fade-in duration-700">
+    <div className="max-w-7xl mx-auto px-8 py-10 space-y-8 animate-in fade-in duration-700">
       {/* Header Section */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100">
         <div className="space-y-2">
@@ -59,17 +59,17 @@ const CoursePage = () => {
       </div>
 
       {/* Table Section */}
-      <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/60 border border-slate-100 overflow-hidden">
+      <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/60 border border-slate-100 overflow-hidden ring-1 ring-slate-100 ring-offset-8">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="bg-slate-50/50 border-b border-slate-100">
-                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Student Info</th>
-                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Field of Study</th>
-                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400">Tech & Platform</th>
-                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-center">Learning Stats</th>
-                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-center">Completion</th>
-                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-slate-400 text-center">Score</th>
+              <tr className="bg-emerald-600 border-b border-emerald-600">
+                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-white">Student Info</th>
+                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-white">Field of Study</th>
+                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-white">Tech & Platform</th>
+                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-white text-center">Learning Stats</th>
+                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-white text-center">Completion</th>
+                <th className="px-6 py-5 text-[11px] font-black uppercase tracking-widest text-white text-center">Score</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-50">

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Users, BookOpen, LogOut, User, Settings, Menu, X } from 'lucide-react';
+import { Home, Users, BookOpen, User, Settings, Menu, X, FileText } from 'lucide-react';
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
@@ -9,6 +9,7 @@ const Sidebar = () => {
     { name: 'Home', path: '/', icon: <Home size={20} /> },
     { name: 'Students', path: '/students', icon: <Users size={20} /> },
     { name: 'Courses', path: '/courses', icon: <BookOpen size={20} /> },
+    { name: 'Exams', path: '/exams', icon: <FileText size={20} /> },
   ];
 
   return (
@@ -37,11 +38,21 @@ const Sidebar = () => {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-gray-100">
-        <button className="flex items-center space-x-4 p-3 w-full text-gray-500 hover:bg-red-50 hover:text-red-600 rounded-xl transition-all">
-          <LogOut size={20} />
-          {isOpen && <span className="font-medium">Quick Logout</span>}
-        </button>
+      {/* Footer */}
+      <div className="p-4 border-t border-gray-100 bg-gray-50">
+        {isOpen && (
+          <div className="text-center space-y-2">
+            <p className="text-xs font-semibold text-gray-600">Version 1.0.0</p>
+            <p className="text-[10px] text-gray-500 leading-tight">
+              © 2026 Career Academy. All rights reserved.
+            </p>
+          </div>
+        )}
+        {!isOpen && (
+          <div className="text-center">
+            <p className="text-[8px] text-gray-500">v1.0.0</p>
+          </div>
+        )}
       </div>
     </aside>
   );

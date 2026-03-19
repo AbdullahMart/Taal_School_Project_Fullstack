@@ -185,7 +185,7 @@ export default function LoginPage({ onLogin }: LoginPageProps) {
                 <div className="w-6 h-6 border-4 border-white/20 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  Enter Dashboard
+                  Login
                   <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                 </>
               )}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Student } from '../types';
-import { Search, Users, GraduationCap, MapPin, UserCircle, UserPlus } from 'lucide-react';
+import { Search, Users, GraduationCap, MapPin, UserCircle, UserPlus, BookOpen } from 'lucide-react';
 
 export default function StudentPage() {
   const navigate = useNavigate();
@@ -23,12 +23,12 @@ export default function StudentPage() {
         console.error('Error fetching students:', err);
         // Fallback dummy data
         setStudents([
-          { student_id: 1, first_name: 'Emma', last_name: 'Thompson', country: 'United Kingdom', age: 22, gender: 'Female', education_level: 'Bachelor' },
-          { student_id: 2, first_name: 'Lukas', last_name: 'Müller', country: 'Germany', age: 24, gender: 'Male', education_level: 'Master' },
-          { student_id: 3, first_name: 'Sofia', last_name: 'Garcia', country: 'Spain', age: 21, gender: 'Female', education_level: 'High School' },
-          { student_id: 4, first_name: 'Hiroshi', last_name: 'Tanaka', country: 'Japan', age: 23, gender: 'Male', education_level: 'PhD' },
-          { student_id: 5, first_name: 'Amara', last_name: 'Diallo', country: 'Senegal', age: 25, gender: 'Female', education_level: 'Bachelor' },
-          { student_id: 6, first_name: 'Mateo', last_name: 'Rossi', country: 'Italy', age: 22, gender: 'Male', education_level: 'Bachelor' }
+          { student_id: 1, first_name: 'Emma', last_name: 'Thompson', country: 'United Kingdom', age: 22, gender: 'Female', education_level: 'Bachelor', field_of_study: 'Computer Science' },
+          { student_id: 2, first_name: 'Lukas', last_name: 'Müller', country: 'Germany', age: 24, gender: 'Male', education_level: 'Master', field_of_study: 'Data Science' },
+          { student_id: 3, first_name: 'Sofia', last_name: 'Garcia', country: 'Spain', age: 21, gender: 'Female', education_level: 'High School', field_of_study: 'Artificial Intelligence' },
+          { student_id: 4, first_name: 'Hiroshi', last_name: 'Tanaka', country: 'Japan', age: 23, gender: 'Male', education_level: 'PhD', field_of_study: 'Cyber Security' },
+          { student_id: 5, first_name: 'Amara', last_name: 'Diallo', country: 'Senegal', age: 25, gender: 'Female', education_level: 'Bachelor', field_of_study: 'Software Engineering' },
+          { student_id: 6, first_name: 'Mateo', last_name: 'Rossi', country: 'Italy', age: 22, gender: 'Male', education_level: 'Bachelor', field_of_study: 'Web Development' }
         ]);
         setLoading(false);
       });
@@ -54,14 +54,6 @@ export default function StudentPage() {
           </div>
 
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => navigate('/students/add')}
-              className="flex items-center gap-3 px-6 py-4 bg-blue-600 text-white rounded-2xl font-bold hover:bg-blue-700 active:scale-95 transition-all shadow-xl shadow-blue-200"
-            >
-              <UserPlus size={20} />
-              Add Student
-            </button>
-
             <div className="relative group min-w-75">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={18} />
               <input 
@@ -69,9 +61,17 @@ export default function StudentPage() {
                 placeholder="Search by name or country..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-6 py-4 bg-white rounded-2xl border border-slate-200 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all shadow-sm shadow-slate-200/50"
+                className="w-full pl-12 pr-6 py-2.5 bg-white rounded-xl border border-slate-200 outline-none focus:ring-4 focus:ring-blue-500/10 focus:border-blue-500 transition-all shadow-sm shadow-slate-200/50 text-sm"
               />
             </div>
+
+            <button 
+              onClick={() => navigate('/students/add')}
+              className="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 text-white rounded-xl font-semibold text-sm hover:bg-emerald-700 active:scale-95 transition-all shadow-lg shadow-emerald-200"
+            >
+              <UserPlus size={18} />
+              Add Student
+            </button>
           </div>
         </div>
 
@@ -86,12 +86,13 @@ export default function StudentPage() {
           <div className="overflow-x-auto">
             <table className="w-full text-left border-collapse">
               <thead>
-                <tr className="bg-slate-50/50 border-b border-slate-100">
-                  <th className="px-8 py-6 text-sm font-bold text-slate-400 uppercase tracking-widest">Student</th>
-                  <th className="px-6 py-6 text-sm font-bold text-slate-400 uppercase tracking-widest">Country</th>
-                  <th className="px-6 py-6 text-sm font-bold text-slate-400 uppercase tracking-widest text-center">Age</th>
-                  <th className="px-6 py-6 text-sm font-bold text-slate-400 uppercase tracking-widest">Gender</th>
-                  <th className="px-8 py-6 text-sm font-bold text-slate-400 uppercase tracking-widest text-right">Education Level</th>
+                <tr className="bg-emerald-600 border-b border-emerald-600">
+                  <th className="px-8 py-6 text-sm font-bold text-white uppercase tracking-widest">Student</th>
+                  <th className="px-6 py-6 text-sm font-bold text-white uppercase tracking-widest">Gender</th>
+                  <th className="px-6 py-6 text-sm font-bold text-white uppercase tracking-widest text-center">Age</th>
+                  <th className="px-6 py-6 text-sm font-bold text-white uppercase tracking-widest">Country</th>
+                  <th className="px-6 py-6 text-sm font-bold text-white uppercase tracking-widest">Field of Study</th>
+                  <th className="px-8 py-6 text-sm font-bold text-white uppercase tracking-widest text-right">Education Level</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
@@ -109,10 +110,13 @@ export default function StudentPage() {
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                      <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100/50 border border-slate-100 w-fit group-hover:bg-white group-hover:border-slate-200 transition-colors">
-                        <MapPin size={14} className="text-slate-400" />
-                        <span className="text-sm font-bold text-slate-700">{student.country}</span>
-                      </div>
+                      <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border ${
+                        student.gender === 'Female' ? 'bg-pink-50 text-pink-600 border-pink-100' : 
+                        student.gender === 'Male' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' : 
+                        'bg-slate-50 text-slate-600 border-slate-100'
+                      }`}>
+                        {student.gender}
+                      </span>
                     </td>
                     <td className="px-6 py-5">
                       <div className="flex flex-col items-center">
@@ -121,12 +125,14 @@ export default function StudentPage() {
                       </div>
                     </td>
                     <td className="px-6 py-5">
-                      <span className={`px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest border ${
-                        student.gender === 'Female' ? 'bg-pink-50 text-pink-600 border-pink-100' : 
-                        student.gender === 'Male' ? 'bg-indigo-50 text-indigo-600 border-indigo-100' : 
-                        'bg-slate-50 text-slate-600 border-slate-100'
-                      }`}>
-                        {student.gender}
+                      <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100/50 border border-slate-100 w-fit group-hover:bg-white group-hover:border-slate-200 transition-colors">
+                        <MapPin size={14} className="text-slate-400" />
+                        <span className="text-sm font-bold text-slate-700">{student.country}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-5">
+                      <span className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-700 rounded-lg text-sm font-bold border border-emerald-100 italic">
+                        <BookOpen size={14} /> {student.field_of_study || 'N/A'}
                       </span>
                     </td>
                     <td className="px-8 py-5 text-right">
@@ -138,7 +144,7 @@ export default function StudentPage() {
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan={5} className="px-8 py-20 text-center">
+                    <td colSpan={6} className="px-8 py-20 text-center">
                       <div className="max-w-xs mx-auto space-y-4">
                         <div className="w-16 h-16 bg-slate-100 rounded-3xl flex items-center justify-center mx-auto text-slate-300">
                           <Users size={32} />

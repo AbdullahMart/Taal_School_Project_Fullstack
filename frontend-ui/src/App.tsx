@@ -7,6 +7,7 @@ import CoursePage from './components/CoursePage';
 import StudentPage from './components/StudentPage';
 import AddStudentPage from './components/AddStudentPage';
 import LoginPage from './components/LoginPage';
+import ExamPage from './components/ExamPage';
 import QuestionTable from './components/QuestionTable';
 import type { Filters } from './types';
 import { useState, useEffect } from 'react';
@@ -75,6 +76,9 @@ export default function App() {
             
             {/* Courses Page (Database Verilerini İçeren Yeni Tasarım) */}
             <Route path="/courses" element={<CoursePage />} />
+            
+            {/* Exams Page */}
+            <Route path="/exams" element={<ExamPage />} />
             
             {/* Questions Page */}
             <Route path="/questions" element={

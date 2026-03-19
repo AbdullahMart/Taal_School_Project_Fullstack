@@ -1,21 +1,28 @@
 import { useEffect, useState } from "react";
-import { Filters, Question } from "../types";
+import type { Filters, Question } from "../types";
 
 interface QuestionTableProps {
   filters: Filters;
+  initialData?: Question[];
 }
 
-export default function QuestionTable({ filters }: QuestionTableProps) {
-  const [data, setData] = useState<Question[]>([]);
+export default function QuestionTable({ filters, initialData }: QuestionTableProps) {
+  const [data, setData] = useState<Question[]>(initialData || []);
   const [page, setPage] = useState(1);
   const perPage = 20;
 
   useEffect(() => {
+    // If initialData is provided, use it instead of fetching
+    if (initialData && initialData.length > 0) {
+      setData(initialData);
+      return;
+    }
+    
     fetch("http://localhost:3001/api/questions")
       .then((res) => res.json())
       .then((json) => setData(json))
       .catch((err) => console.error("Veri çekme hatası:", err));
-  }, []);
+  }, [initialData]);
 
   const filtered = data.filter((item) => {
     const matchSearch =
@@ -30,7 +37,7 @@ export default function QuestionTable({ filters }: QuestionTableProps) {
   const pageCount = Math.ceil(filtered.length / perPage);
   const visibleData = filtered.slice((page - 1) * perPage, page * perPage);
 
-  const statusBadge = (status) => {
+  const statusBadge = (status: string) => {
     const base = "inline-block px-3 py-1 rounded-full text-xs font-medium";
     const s = status.toLowerCase();
     if (s === "approved") return `${base} bg-green-100 text-green-700`;
@@ -40,85 +47,87 @@ export default function QuestionTable({ filters }: QuestionTableProps) {
   };
 
   return (
-    <div className=" bg-white rounded-xl shadow border border-gray-200 overflow-hidden">
-      <table className="min-w-full divide-y divide-gray-200 text-sm text-left">
-        <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wide">
-          <tr>
-            <th className="px-6 py-3">Created At</th>
-            <th className="px-6 py-3">Level</th>
-            <th className="px-6 py-3">Skills</th>
-            <th className="px-6 py-3">Code</th>
-            <th className="px-6 py-3">Exam Name</th>
-            <th className="px-6 py-3 text-center">Paragraphs</th>
-            <th className="px-6 py-3 text-center">Question</th>
-            <th className="px-6 py-3">Status</th>
-            <th className="px-6 py-3 text-center">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="divide-y divide-gray-100 bg-white">
-          {visibleData.map((item) => (
-            <tr key={item.id} className="hover:bg-gray-50 transition">
-              <td className="px-6 py-4">{new Date(item.created_at).toLocaleString()}</td>
-              <td className="px-6 py-4 text-blue-600 font-semibold">{item.level}</td>
-              <td className="px-6 py-4 capitalize">{item.skill}</td>
-              <td className="px-6 py-4">{item.code}</td>
-              <td className="px-6 py-4">{item.title}</td>
-              <td className="px-6 py-4 text-center">{item.meta?.paragraphs ?? 0}</td>
-              <td className="px-6 py-4 text-center">{item.meta?.questions ?? 0}</td>
-              <td className="px-6 py-4">
-                <span className={statusBadge(item.status)}>{item.status}</span>
-              </td>
-              <td className="px-6 py-4 text-center flex justify-center gap-2 text-gray-500">
-                <button
-                  title="View"
-                  className="inline-flex items-center justify-center w-6 h-6 hover:bg-gray-100 transition"
-                >
-                  <img
-                    src="/icon/eye.png"
-                    alt="View"
-                    className="w-4 h-4 object-contain"
-                  />
-                </button>
-
-                <td className="text-center align-middle">
+    <div className="bg-white rounded-[2.5rem] shadow-2xl shadow-slate-200/60 border border-slate-100 overflow-hidden ring-1 ring-slate-100 ring-offset-8">
+      <div className="overflow-x-auto">
+        <table className="w-full divide-y divide-slate-100 text-sm text-left border-collapse">
+          <thead className="bg-emerald-600 text-white text-xs uppercase tracking-wide">
+            <tr>
+              <th className="px-6 py-3">Created At</th>
+              <th className="px-6 py-3">Level</th>
+              <th className="px-6 py-3">Skills</th>
+              <th className="px-6 py-3">Code</th>
+              <th className="px-6 py-3">Exam Name</th>
+              <th className="px-6 py-3 text-center">Paragraphs</th>
+              <th className="px-6 py-3 text-center">Question</th>
+              <th className="px-6 py-3">Status</th>
+              <th className="px-6 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-slate-100 bg-white">
+            {visibleData.map((item) => (
+              <tr key={item.id} className="hover:bg-slate-50/80 transition">
+                <td className="px-6 py-4">{new Date(item.created_at).toLocaleString()}</td>
+                <td className="px-6 py-4 text-blue-600 font-semibold">{item.level}</td>
+                <td className="px-6 py-4 capitalize">{item.skill}</td>
+                <td className="px-6 py-4">{item.code}</td>
+                <td className="px-6 py-4">{item.title}</td>
+                <td className="px-6 py-4 text-center">{item.meta?.paragraphs ?? 0}</td>
+                <td className="px-6 py-4 text-center">{item.meta?.questions ?? 0}</td>
+                <td className="px-6 py-4">
+                  <span className={statusBadge(item.status)}>{item.status}</span>
+                </td>
+                <td className="px-6 py-4 text-center flex justify-center gap-2 text-gray-500">
                   <button
-                    title="Edit"
+                    title="View"
                     className="inline-flex items-center justify-center w-6 h-6 hover:bg-gray-100 transition"
                   >
                     <img
-                      src="/icon/edit.png"
-                      alt="Edit"
+                      src="/icon/eye.png"
+                      alt="View"
                       className="w-4 h-4 object-contain"
                     />
                   </button>
-                </td >
 
-                <button
-                  title="delete"
-                  className="inline-flex items-center justify-center w-6 h-6 hover:bg-gray-100 transition"
-                >
-                  <img
-                    src="/icon/delete.png"
-                    alt="Delete"
-                    className="w-4 h-4 object-contain"
-                  />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  <td className="text-center align-middle">
+                    <button
+                      title="Edit"
+                      className="inline-flex items-center justify-center w-6 h-6 hover:bg-gray-100 transition"
+                    >
+                      <img
+                        src="/icon/edit.png"
+                        alt="Edit"
+                        className="w-4 h-4 object-contain"
+                      />
+                    </button>
+                  </td >
+
+                  <button
+                    title="delete"
+                    className="inline-flex items-center justify-center w-6 h-6 hover:bg-gray-100 transition"
+                  >
+                    <img
+                      src="/icon/delete.png"
+                      alt="Delete"
+                      className="w-4 h-4 object-contain"
+                    />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {/* Pagination */}
       {pageCount > 1 && (
-        <div className="flex justify-end items-center gap-2 px-4 py-3 bg-white border-t">
+        <div className="flex justify-end items-center gap-2 px-4 py-3 bg-white border-t border-slate-100">
           {Array.from({ length: pageCount }, (_, i) => (
             <button
               key={i}
               onClick={() => setPage(i + 1)}
               className={`px-3 py-1.5 rounded-md text-sm border transition ${page === i + 1
-                ? "bg-blue-600 text-white border-blue-600"
-                : "bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                ? "bg-emerald-600 text-white border-emerald-600"
+                : "bg-white text-slate-700 border-slate-300 hover:bg-slate-50"
                 }`}
             >
               {i + 1}

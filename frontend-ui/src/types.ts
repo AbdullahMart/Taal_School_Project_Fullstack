@@ -11,8 +11,10 @@ export interface Question {
   skill: string;
   code: string;
   title: string;
-  paragraphs: number;
-  question_count: number;
+  meta?: {
+    paragraphs: number;
+    questions: number;
+  };
   status: string;
 }
 
@@ -39,4 +41,5 @@ export interface Student {
   age: number;
   gender: string;
   education_level: string;
+  field_of_study?: string;
 }
