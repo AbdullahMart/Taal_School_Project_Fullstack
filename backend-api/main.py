@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import data, auth
+from db import engine, Base
+from models import models  # noqa: F401 - ensure models are registered
+
+# Create tables if they don't exist
+Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 

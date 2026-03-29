@@ -18,9 +18,32 @@ def create_student(db: Session, student: StudentCreate):
         country=student.country,
         age=student.age,
         gender=student.gender,
-        education_level=student.education_level
+        education_level=student.education_level,
+        field_of_study=student.field_of_study
     )
     db.add(db_student)
     db.commit()
     db.refresh(db_student)
+    return db_student
+
+def get_student(db: Session, student_id: int):
+    return db.query(Student).filter(Student.student_id == student_id).first()
+
+def update_student(db: Session, student_id: int, student_data: dict):
+    db_student = db.query(Student).filter(Student.student_id == student_id).first()
+    if not db_student:
+        return None
+    for key, value in student_data.items():
+        if value is not None:
+            setattr(db_student, key, value)
+    db.commit()
+    db.refresh(db_student)
+    return db_student
+
+def delete_student(db: Session, student_id: int):
+    db_student = db.query(Student).filter(Student.student_id == student_id).first()
+    if not db_student:
+        return None
+    db.delete(db_student)
+    db.commit()
     return db_student

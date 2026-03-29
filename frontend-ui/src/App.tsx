@@ -6,6 +6,7 @@ import HomePage from './components/HomePage';
 import CoursePage from './components/CoursePage';
 import StudentPage from './components/StudentPage';
 import AddStudentPage from './components/AddStudentPage';
+import EditStudentPage from './components/EditStudentPage';
 import LoginPage from './components/LoginPage';
 import ExamPage from './components/ExamPage';
 import QuestionTable from './components/QuestionTable';
@@ -99,6 +100,7 @@ export default function App() {
             {/* Students Page */}
             <Route path="/students" element={<StudentPage />} />
             <Route path="/students/add" element={<AddStudentPage />} />
+            <Route path="/students/edit/:id" element={<EditStudentPage />} />
 
             {/* Students Page Placeholder (Removed and Replaced by StudentPage) */}
           </Routes>

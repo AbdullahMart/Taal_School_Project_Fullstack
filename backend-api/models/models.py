@@ -33,10 +33,11 @@ class StudentStats(Base):
 class Student(Base):
     __tablename__ = "students"
 
-    student_id = Column(Integer, primary_key=True, index=True)
+    student_id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     first_name = Column(String(100))
     last_name = Column(String(100))
     country = Column(String(100))
     age = Column(Integer)
     gender = Column(String(50))
     education_level = Column(String(100))
+    field_of_study = Column(String(100))

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Student } from '../types';
-import { Search, Users, GraduationCap, MapPin, UserCircle, UserPlus, BookOpen } from 'lucide-react';
+import { Search, Users, GraduationCap, MapPin, UserCircle, UserPlus, BookOpen, Pencil, Trash2 } from 'lucide-react';
 
 export default function StudentPage() {
   const navigate = useNavigate();
@@ -9,7 +9,7 @@ export default function StudentPage() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
 
-  useEffect(() => {
+  const fetchStudents = () => {
     fetch('http://localhost:3001/api/students')
       .then(res => {
         if (!res.ok) throw new Error('Not found');
@@ -21,17 +21,25 @@ export default function StudentPage() {
       })
       .catch(err => {
         console.error('Error fetching students:', err);
-        // Fallback dummy data
-        setStudents([
-          { student_id: 1, first_name: 'Emma', last_name: 'Thompson', country: 'United Kingdom', age: 22, gender: 'Female', education_level: 'Bachelor', field_of_study: 'Computer Science' },
-          { student_id: 2, first_name: 'Lukas', last_name: 'Müller', country: 'Germany', age: 24, gender: 'Male', education_level: 'Master', field_of_study: 'Data Science' },
-          { student_id: 3, first_name: 'Sofia', last_name: 'Garcia', country: 'Spain', age: 21, gender: 'Female', education_level: 'High School', field_of_study: 'Artificial Intelligence' },
-          { student_id: 4, first_name: 'Hiroshi', last_name: 'Tanaka', country: 'Japan', age: 23, gender: 'Male', education_level: 'PhD', field_of_study: 'Cyber Security' },
-          { student_id: 5, first_name: 'Amara', last_name: 'Diallo', country: 'Senegal', age: 25, gender: 'Female', education_level: 'Bachelor', field_of_study: 'Software Engineering' },
-          { student_id: 6, first_name: 'Mateo', last_name: 'Rossi', country: 'Italy', age: 22, gender: 'Male', education_level: 'Bachelor', field_of_study: 'Web Development' }
-        ]);
+        setStudents([]);
         setLoading(false);
       });
+  };
+
+  const handleDelete = async (id: number) => {
+    if (!window.confirm('Are you sure you want to delete this student?')) return;
+    try {
+      const res = await fetch(`http://localhost:3001/api/students/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        setStudents(prev => prev.filter(s => s.student_id !== id));
+      }
+    } catch (err) {
+      console.error('Error deleting student:', err);
+    }
+  };
+
+  useEffect(() => {
+    fetchStudents();
   }, []);
 
   const filteredStudents = students.filter(s => 
@@ -92,7 +100,8 @@ export default function StudentPage() {
                   <th className="px-6 py-6 text-sm font-bold text-white uppercase tracking-widest text-center">Age</th>
                   <th className="px-6 py-6 text-sm font-bold text-white uppercase tracking-widest">Country</th>
                   <th className="px-6 py-6 text-sm font-bold text-white uppercase tracking-widest">Field of Study</th>
-                  <th className="px-8 py-6 text-sm font-bold text-white uppercase tracking-widest text-right">Education Level</th>
+                  <th className="px-6 py-6 text-sm font-bold text-white uppercase tracking-widest">Education Level</th>
+                  <th className="px-6 py-6 text-sm font-bold text-white uppercase tracking-widest text-center">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-50">
@@ -135,16 +144,34 @@ export default function StudentPage() {
                         <BookOpen size={14} /> {student.field_of_study || 'N/A'}
                       </span>
                     </td>
-                    <td className="px-8 py-5 text-right">
+                    <td className="px-6 py-5">
                       <div className="inline-flex items-center gap-2 text-sm font-black text-slate-800 bg-white border border-slate-200 px-4 py-2 rounded-2xl shadow-sm group-hover:border-blue-500/30 group-hover:text-blue-600 transition-all">
                         <GraduationCap size={16} className="text-blue-500" />
                         {student.education_level}
                       </div>
                     </td>
+                    <td className="px-6 py-5">
+                      <div className="flex items-center justify-center gap-2">
+                        <button
+                          onClick={() => navigate(`/students/edit/${student.student_id}`)}
+                          className="p-2 rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-100 border border-blue-100 transition-all active:scale-90"
+                          title="Edit"
+                        >
+                          <Pencil size={16} />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(student.student_id)}
+                          className="p-2 rounded-xl bg-red-50 text-red-600 hover:bg-red-100 border border-red-100 transition-all active:scale-90"
+                          title="Delete"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 )) : (
                   <tr>
-                    <td colSpan={6} className="px-8 py-20 text-center">
+                    <td colSpan={7} className="px-8 py-20 text-center">
                       <div className="max-w-xs mx-auto space-y-4">
                         <div className="w-16 h-16 bg-slate-100 rounded-3xl flex items-center justify-center mx-auto text-slate-300">
                           <Users size={32} />
