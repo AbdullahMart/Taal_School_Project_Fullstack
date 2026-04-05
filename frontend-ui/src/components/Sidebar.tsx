@@ -50,7 +50,7 @@ const Sidebar = () => {
         )}
         {!isOpen && (
           <div className="text-center">
-            <p className="text-[8px] text-gray-500">v1.0.0</p>
+            <p className="text-[8px] text-gray-500">v1.0.3</p>
           </div>
         )}
       </div>

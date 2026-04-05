@@ -1,5 +1,5 @@
--- Students table for app_db
-USE app_db;
+-- Students table for career_academy
+USE career_academy;
 
 CREATE TABLE IF NOT EXISTS students (
     student_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -14,9 +14,4 @@ CREATE TABLE IF NOT EXISTS students (
 
 -- Sample data
 INSERT INTO students (first_name, last_name, country, age, gender, education_level, field_of_study) VALUES
-('Emma', 'Thompson', 'United Kingdom', 22, 'Female', 'Bachelor', 'Computer Science'),
-('Lukas', 'Müller', 'Germany', 24, 'Male', 'Master', 'Data Science'),
-('Sofia', 'Garcia', 'Spain', 21, 'Female', 'High School', 'Artificial Intelligence'),
-('Hiroshi', 'Tanaka', 'Japan', 23, 'Male', 'PhD', 'Cyber Security'),
-('Amara', 'Diallo', 'Senegal', 25, 'Female', 'Bachelor', 'Software Engineering'),
-('Mateo', 'Rossi', 'Italy', 22, 'Male', 'Bachelor', 'Web Development');
+;
