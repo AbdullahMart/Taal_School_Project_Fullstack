@@ -1,143 +1,333 @@
-# Taal_School_Sql_Fullstack_Project
+# Taal School Project - Fullstack
 
 **Kısa Açıklama**
-Bu depo, basit bir React (Vite) ön yüzü ve Node.js (Express) tabanlı bir backend API içerir. Backend MySQL veritabanına bağlanır ve `app_question_body` tablosundan soruları döner. Bu rehber, Git ve Node deneyimi sınırlı öğrencilerin projeyi yerel makinelerine indirip çalıştırabilmesi için adım adım anlatır.
+Bu depo, React (Vite) ile kodlanmış bir ön yüz ve Python FastAPI tabanlı bir backend API içerir. Backend, MySQL veritabanına bağlanarak öğrenci yönetimi, sınavlar ve kurs verilerini yönetir. Proje Docker ile containerize edilmiş olup, kolay kurulumu için `docker-compose` desteklemektedir.
 
 ---
 
-## Gereksinimler ✅
-- Git (veya GitHub'dan ZIP ile indirme)
-- Node.js **LTS** (18.x veya üstü) ve npm
-- MySQL (yerel kurulum) 
-- VS Code veya başka bir kod editörü
+## 📋 Gereksinimler
+
+### Option 1: Docker ile çalıştırma (Önerilen) 🐋
+- Docker Desktop
+- Docker Compose
+
+### Option 2: Yerel kurulum
+- **Backend**: Python 3.9+
+- **Frontend**: Node.js **LTS** (18.x veya üstü) ve npm
+- **Database**: MySQL 8.0
+- **Git** (veya GitHub'dan ZIP ile indirme)
 
 ---
 
-## 1) Repoyu İndirme
-1. Git ile (tercih edilir):
+## 🚀 Kurulum ve Çalıştırma
 
+### Option 1: Docker ile Kurulum (En Hızlı) 🐋
+
+1. **Repoyu indirin:**
 ```bash
 git clone https://github.com/AbdullahMart/Taal_School_Project_Fullstack.git
 cd Taal_School_Project_Fullstack
 ```
 
-> Öneri: Repo'yu kendi GitHub hesabınıza almak isterseniz, GitHub sayfasından **Fork** yapın, sonra fork'unuzu klonlayın.
-
-Not: Git bilginiz yoksa GitHub sayfasından **Code → Download ZIP** ile indirebilirsiniz; zip'i açıp aynı klasöre gelin.
-
----
-2. MySQL veritabanını oluşturun ve örnek tablo ekleyin (MySQL komut satırında veya bir GUI ile çalıştırın):
-
-### MySQL Workbench veya CLI ile SQL dosyalarını yükleme 📥
-Aşağıdaki adımları izleyerek `app_db-schema.sql` (şema) ve `app_db-data.sql` (örnek veriler) dosyalarını yükleyin. **Önce şema**, sonra **veri** dosyasını çalıştırın.
-
-A. MySQL Workbench ile (grafiksel):
-1. MySQL Workbench'i açın ve yerel MySQL bağlantınıza çift tıklayarak bağlanın.
-2. Üst menüden **File → Open SQL Script** ile `app_db-schema.sql` dosyasını açın.
-3. Sağ üstteki ⚡ (Execute) butonuna veya Ctrl+Shift+Enter ile script'i çalıştırın. `Schemas` bölümünde `app_db` görünmelidir.
-4. Aynı şekilde **File → Open SQL Script** ile `app_db-data.sql` dosyasını açın ve çalıştırın. Veriler `app_question_body` tablosuna eklenecektir.
-
-
-B. Kontrol
-- Workbench'te `Schemas → app_db → Tables → app_question_body` altında kayıtları görebilirsiniz.
-- Workbanch SQL Query (Test için):
-
----Query icine Test icin yazabilirsin.---
-
-select * 
-from app_db.app_question_body;
-
--------------------------------------------
-
-3. MySQL bağlantı bilgilerini kontrol edin:
-- Varsayılan `backend-api/index.js` içindeki bağlantı bilgileri örnektir; kendi MySQL kullanıcı/parolanızı kullanın. `backend-api/index.js` dosyasini açıp şu bölümü bulun ve düzenleyin:
-
-```js
-const db = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '!@#123qwert', // -> burayı kendi parolanızla değiştirin
-  database: 'app_db'
-});
+2. **Environment dosyasını oluşturun** (isteğe bağlı):
+```bash
+# Backend için .env dosyası (backend-api/.env)
+DB_HOST=db
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=rootpassword
+DB_NAME=app_db
 ```
 
-> İpucu: Güvenlik için gerçek projelerde **şifreleri repoya koymayın**; `.env` kullanın.
+3. **Docker Compose ile çalıştırın:**
+```bash
+docker-compose up --build
+```
 
+4. **Uygulamaya erişin:**
+- **Frontend**: http://localhost:5173
+- **Backend API**: http://localhost:3001
+- **MySQL**: localhost:3307 (host machine'den)
 
-## 3) Backend (API) kurulumu ve çalıştırma 🔧
+> Tüm servisler otomatik olarak başlatılacak ve birbirine bağlanacaktır.
 
-A. backend-api dizinine gidin:
-- Kökten (kısa):
+---
+
+### Option 2: Yerel Kurulum 👨‍💻
+
+#### 1️⃣ Repoyu İndirme
+```bash
+git clone https://github.com/AbdullahMart/Taal_School_Project_Fullstack.git
+cd Taal_School_Project_Fullstack
+```
+
+#### 2️⃣ Veritabanı Kurulumu
+
+1. **MySQL'i başlatın** (yerel kurulum yapılmış olmalı)
+2. **Veritabanını oluşturun:**
+```bash
+mysql -u root -p < students_table.sql
+```
+
+3. **MySQL Workbench ile (Alternatif):**
+   - MySQL Workbench'i açın
+   - File → Open SQL Script
+   - `students_table.sql` dosyasını seçin
+   - Execute butonuna (⚡) basın
+
+#### 3️⃣ Backend (Python FastAPI) Kurulumu
 
 ```bash
 cd backend-api
+
+# Python virtual environment oluşturun (önerilen)
+python -m venv venv
+
+# Virtual environment'i aktif edin
+# Windows:
+venv\Scripts\activate
+# macOS/Linux:
+source venv/bin/activate
+
+# Bağımlılıkları yükleyin
+pip install -r requirements.txt
+
+# Backend'i çalıştırın
+python main.py
 ```
 
+**Başarılı ise göreceksiniz:**
+```
+INFO:     Uvicorn running on http://0.0.0.0:3001
+INFO:     Application startup complete
+```
 
+#### 4️⃣ Frontend (React + Vite) Kurulumu
 
-B. API'yi başlatın:
-
+**Yeni terminal açın** (backend'i açık bırakın):
 ```bash
-node index.js
-```
+cd frontend-ui
 
-> Not: Eğer `Error: Cannot find module '...\index.js'` gibi bir hata görürseniz, muhtemelen `node index.js` komutunu yanlış klasörden çalıştırdınız; ya `cd backend-api` ile doğru klasöre geçin ya da tam dosya yolunu kullanarak çalıştırın:
-
-
-
-- Başarılıysa: `🚀 API çalışıyor: http://localhost:3001` ve `✅ MySQL bağlantısı başarılı!` göreceksiniz.
-
-- Sql server'dan verilerin gelip gelmedigini test etmek icin :
-
-```web browser (Chrome veya edge vs.)
-
-Url: http://localhost:3001/api/questions
-```
-
----
-
-## 4) Frontend (React + Vite) kurulumu ve çalıştırma 🌐
-A. Vs Code ile yeni Terminal acin. Backen-api terminalini kapatmayin. Acilan yeni terminalde Frontend dizinine gidin:
-
-- Repo kökünden (kısa):
-
-```bash
-cd app_db/App_db
-```
-
-
-
-B. Bağımlılıkları yükleyin:
-
-```bash
+# Bağımlılıkları yükleyin
 npm install
-```
 
-> İpucu: Eğer `npm install` komutunu yanlış üst klasörde çalıştırırsanız, bağımlılıklar `app_db` kökünde ya da başka bir yerde kurulabilir; doğru klasörde (`app_db/App_db`) olduğunuzdan emin olun.
-
-C. Geliştirme sunucusunu başlatın:
-
-- Kısa yol:
-
-```bash
+# Geliştirme sunucusunu başlatın
 npm run dev
 ```
 
-
-- Vite genellikle `http://localhost:5173/` adresini verecektir. Tarayıcıda açın.
-- Frontend otomatik olarak backend API'sine `http://localhost:3001/api/questions` endpoint'inden istek atarak verileri çekmelidir (CORS zaten etkin).
+**Tarayıcıda açın:** http://localhost:5173
 
 ---
 
+## 📁 Proje Yapısı
 
+```
+Taal_School_Project_Fullstack/
+├── backend-api/              # Python FastAPI Backend
+│   ├── main.py              # FastAPI uygulaması
+│   ├── db.py                # SQLAlchemy database config
+│   ├── requirements.txt      # Python bağımlılıkları
+│   ├── Dockerfile
+│   ├── core/
+│   │   ├── config.py        # Yapılandırma
+│   │   └── security.py      # JWT & Auth
+│   ├── models/
+│   │   └── models.py        # SQLAlchemy models
+│   ├── routers/
+│   │   ├── auth.py          # Auth API endpoints
+│   │   └── data.py          # Data API endpoints
+│   ├── schemas/
+│   │   └── student.py       # Pydantic schemas
+│   └── services/
+│       └── data_service.py  # Business logic
+├── frontend-ui/             # React + TypeScript + Vite
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tsconfig.json
+│   ├── Dockerfile
+│   ├── index.html
+│   ├── src/
+│   │   ├── App.tsx
+│   │   ├── main.tsx
+│   │   ├── types.ts
+│   │   └── components/
+│   │       ├── LoginPage.tsx
+│   │       ├── HomePage.tsx
+│   │       ├── StudentPage.tsx
+│   │       ├── CoursePage.tsx
+│   │       ├── ExamPage.tsx
+│   │       ├── DashboardStats.tsx
+│   │       └── ...
+├── docker-compose.yml       # Docker Compose configuration
+├── students_table.sql       # Veritabanı şeması
+└── README.md
+```
 
-## 4) Yaygın Sorunlar ve Çözümleri ⚠️
-- "MySQL bağlantı hatası": MySQL servisi çalışıyor mu? Kullanıcı/parola/host doğru mu? 3306 portu başka bir uygulama tarafından mı kullanılıyor?
-- "Port already in use": 3001 veya 5173 portlarını başka uygulamalar kullanıyor olabilir. Farklı port deneyin veya o uygulamayı kapatın.
-- Eksik paketler: `npm install` komutunu ilgili dizinde çalıştırdığınızdan emin olun.
-- Node sürümü uyuşmazlığı: LTS (18.x/20.x) kullanın.
+---
 
-Abdullah Mart
+## 📊 Veritabanı Tabloları
 
-Balarilar dilerim...
+### `students` - Öğrenci Bilgileri
+```sql
+- student_id (INT, Primary Key)
+- first_name (VARCHAR)
+- last_name (VARCHAR)
+- country (VARCHAR)
+- age (INT)
+- gender (VARCHAR)
+- education_level (VARCHAR)
+- field_of_study (VARCHAR)
+```
+
+### `app_question_body` - Sınav Soruları
+```sql
+- id (INT, Primary Key)
+- created_at (DATETIME)
+- level (VARCHAR)
+- skill (VARCHAR)
+- code (VARCHAR)
+- title (VARCHAR)
+- paragraphs (INT)
+- question_count (INT)
+- status (VARCHAR)
+```
+
+### `student_stats` - Öğrenci İstatistikleri
+```sql
+- student_id (INT, Primary Key)
+- country, field_of_study, platform_used, device_used
+- learning_mode, enrollment_date, daily_learning_hours
+- quizzes_attempted, assignments_submitted
+- course_completion_rate, satisfaction_score
+```
+
+---
+
+## 🔐 API Endpoints
+
+### Authentication (Auth)
+```bash
+POST /api/login
+# Body: { "email": "user@example.com", "password": "password" }
+# Response: { "access_token": "...", "token_type": "bearer", "user": {...} }
+```
+
+### Data (Students, Questions, Stats)
+```bash
+GET /api/students              # Tüm öğrencileri listele
+POST /api/students             # Yeni öğrenci ekle
+GET /api/students/{id}         # Öğrenci detayları
+PUT /api/students/{id}         # Öğrenci güncelle
+DELETE /api/students/{id}      # Öğrenci sil
+
+GET /api/questions             # Tüm soruları listele
+GET /api/questions/{id}        # Soru detayları
+```
+
+---
+
+## ⚙️ Environment Variables
+
+**Backend (.env dosyası - backend-api/.env):**
+```env
+DB_HOST=localhost           # veya Docker'da 'db'
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=rootpassword
+DB_NAME=app_db
+
+AUTH_EMAIL=test@example.com
+AUTH_PASSWORD=password123
+ACCESS_TOKEN_EXPIRE_MINUTES=30
+```
+
+**Frontend (.env dosyası - frontend-ui/.env):**
+```env
+VITE_API_URL=http://localhost:3001
+```
+
+---
+
+## ⚠️ Yaygın Sorunlar ve Çözümleri
+
+### 1. "Port already in use" Hatası
+```bash
+# 3001 portunu kullanan işlemi bulun ve durdurun
+# Windows:
+netstat -ano | findstr :3001
+taskkill /PID <PID> /F
+
+# macOS/Linux:
+lsof -i :3001
+kill -9 <PID>
+```
+
+### 2. "MySQL connection refused"
+- MySQL servisi çalışıyor mu? (Services'te kontrol edin)
+- Kullanıcı adı/parola doğru mu?
+- Port 3306 (yerel) veya 3307 (Docker) açık mı?
+
+### 3. "ModuleNotFoundError: No module named 'fastapi'"
+```bash
+# Virtual environment aktif mi?
+# Değilse aktif edin ve pip install -r requirements.txt çalıştırın
+pip install -r requirements.txt
+```
+
+### 4. "npm ERR! code ERESOLVE"
+```bash
+# node_modules sil ve yeniden kur
+rm -r node_modules package-lock.json
+npm install
+```
+
+### 5. Docker Compose Hatası
+```bash
+# Logları görüntüle
+docker-compose logs -f
+
+# Container'ları temizle ve yeniden başlat
+docker-compose down
+docker-compose up --build
+```
+
+---
+
+## 📚 Kullanılan Teknolojiler
+
+### Backend
+- **FastAPI** - Modern Python web framework
+- **SQLAlchemy** - ORM database management
+- **Uvicorn** - ASGI server
+- **Python-jose** - JWT authentication
+- **Passlib** - Password hashing
+- **mysql-connector-python** - MySQL driver
+
+### Frontend
+- **React** - UI library
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Build tool
+- **Tailwind CSS** - Styling
+
+### DevOps
+- **Docker** - Containerization
+- **Docker Compose** - Multi-container orchestration
+
+---
+
+## 🤝 Katkıda Bulunma
+
+Projeden yararlandıysanız, lütfen bir ⭐ bırakınız!
+
+---
+
+## 📝 Lisans
+
+Bu proje eğitim amaçlıdır.
+
+---
+
+**Geliştirici**: Abdullah Mart
+
+Baliarilar dilerim... 🎓
 
