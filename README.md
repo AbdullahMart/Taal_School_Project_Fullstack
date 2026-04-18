@@ -7,21 +7,60 @@ Bu depo, React (Vite) ile kodlanmış bir ön yüz ve Python FastAPI tabanlı bi
 
 ## 📋 Gereksinimler
 
-### Option 1: Docker ile çalıştırma (Önerilen) 🐋
-- Docker Desktop
-- Docker Compose
-
-### Option 2: Yerel kurulum
+### Option 1: Yerel Kurulum (Kolay)
 - **Backend**: Python 3.9+
 - **Frontend**: Node.js **LTS** (18.x veya üstü) ve npm
 - **Database**: MySQL 8.0
 - **Git** (veya GitHub'dan ZIP ile indirme)
 
+> **Not:** Yerel kurulumda backend ve frontend bağımlılıklarını tek komutla yüklemek için `requirements.txt` ve `npm install` kullanılır.
+
+### Option 2: Docker ile çalıştırma (Alternatif) 🐋
+- Docker Desktop
+- Docker Compose
+
 ---
 
 ## 🚀 Kurulum ve Çalıştırma
 
-### Option 1: Docker ile Kurulum (En Hızlı) 🐋
+### Option 1: Yerel Kurulum 👨‍💻
+
+1. **Repoyu İndirin:**
+```bash
+git clone https://github.com/AbdullahMart/Taal_School_Project_Fullstack.git
+cd Taal_School_Project_Fullstack
+```
+
+2. **Veritabanı Kurulumu:**
+   - MySQL'i başlatın (yerel kurulum yapılmış olmalı, veritabanı oluşturulmuş olmalı)
+   - Tabloları elle oluşturmanıza gerek yoktur. Backend ilk başlatıldığında eksik tablolar otomatik olarak oluşturulur.
+
+3. **Backend Kurulumu:**
+```bash
+cd backend-api
+python -m venv venv  # (sanal ortam)
+venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+python main.py
+
+# veya
+source venv/bin/activate  # macOS/Linux
+pip install -r requirements.txt
+python main.py
+```
+
+4. **Frontend Kurulumu:**
+```bash
+cd frontend-ui
+npm install
+npm run dev
+```
+
+**Tarayıcıda açın:** http://localhost:5173
+
+---
+
+### Option 2: Docker ile Kurulum (Alternatif) 🐋
 
 1. **Repoyu indirin:**
 ```bash
@@ -45,77 +84,11 @@ docker-compose up --build
 ```
 
 4. **Uygulamaya erişin:**
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:3001
-- **MySQL**: localhost:3307 (host machine'den)
+   - **Frontend**: http://localhost:5173
+   - **Backend API**: http://localhost:3001
+   - **MySQL**: localhost:3307 (host machine'den)
 
 > Tüm servisler otomatik olarak başlatılacak ve birbirine bağlanacaktır.
-
----
-
-### Option 2: Yerel Kurulum 👨‍💻
-
-#### 1️⃣ Repoyu İndirme
-```bash
-git clone https://github.com/AbdullahMart/Taal_School_Project_Fullstack.git
-cd Taal_School_Project_Fullstack
-```
-
-#### 2️⃣ Veritabanı Kurulumu
-
-1. **MySQL'i başlatın** (yerel kurulum yapılmış olmalı)
-2. **Veritabanını oluşturun:**
-```bash
-mysql -u root -p < students_table.sql
-```
-
-3. **MySQL Workbench ile (Alternatif):**
-   - MySQL Workbench'i açın
-   - File → Open SQL Script
-   - `students_table.sql` dosyasını seçin
-   - Execute butonuna (⚡) basın
-
-#### 3️⃣ Backend (Python FastAPI) Kurulumu
-
-```bash
-cd backend-api
-
-# Python virtual environment oluşturun (önerilen)
-python -m venv venv
-
-# Virtual environment'i aktif edin
-# Windows:
-venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-
-# Bağımlılıkları yükleyin
-pip install -r requirements.txt
-
-# Backend'i çalıştırın
-python main.py
-```
-
-**Başarılı ise göreceksiniz:**
-```
-INFO:     Uvicorn running on http://0.0.0.0:3001
-INFO:     Application startup complete
-```
-
-#### 4️⃣ Frontend (React + Vite) Kurulumu
-
-**Yeni terminal açın** (backend'i açık bırakın):
-```bash
-cd frontend-ui
-
-# Bağımlılıkları yükleyin
-npm install
-
-# Geliştirme sunucusunu başlatın
-npm run dev
-```
-
-**Tarayıcıda açın:** http://localhost:5173
 
 ---
 
