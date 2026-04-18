@@ -1,10 +1,11 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from db import Base
 
 class Question(Base):
     __tablename__ = "app_question_body"
 
-    id = Column(Integer, primary_key=True, index=True)
+    question_id = Column(Integer, primary_key=True, index=True)
+    student_id = Column(Integer, ForeignKey("students.student_id"))
     created_at = Column(DateTime)
     level = Column(String(10))
     skill = Column(String(50))
@@ -14,10 +15,11 @@ class Question(Base):
     question_count = Column(Integer)
     status = Column(String(50))
 
-class Course(Base):
-    __tablename__ = "courses"
+class StudentStats(Base):
+    __tablename__ = "student_stats"
 
-    student_id = Column(Integer, primary_key=True, index=True)
+    student_stats_id = Column(Integer, primary_key=True, index=True)
+    student_id = Column(Integer, ForeignKey("students.student_id"))
     country = Column(String(100))
     field_of_study = Column(String(100))
     platform_used = Column(String(100))

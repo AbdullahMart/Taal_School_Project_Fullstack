@@ -10,7 +10,7 @@ router = APIRouter(prefix="/api", tags=["data"])
 def read_questions(db: Session = Depends(get_db)):
     return data_service.get_questions(db)
 
-@router.get("/student-stats")
+@router.get("/student_stats")
 def read_student_stats(db: Session = Depends(get_db)):
     return data_service.get_student_stats(db)
 

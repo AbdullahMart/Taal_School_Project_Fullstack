@@ -36,7 +36,7 @@ DB_HOST=db
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=rootpassword
-DB_NAME=app_db
+DB_NAME=career_academy
 ```
 
 3. **Docker Compose ile çalıştırın:**
@@ -181,24 +181,33 @@ Taal_School_Project_Fullstack/
 
 ### `app_question_body` - Sınav Soruları
 ```sql
-- id (INT, Primary Key)
-- created_at (DATETIME)
-- level (VARCHAR)
-- skill (VARCHAR)
-- code (VARCHAR)
-- title (VARCHAR)
-- paragraphs (INT)
-- question_count (INT)
-- status (VARCHAR)
+question_id (INT, Primary Key)
+student_id (INT, Foreign Key)
+created_at (DATETIME)
+level (VARCHAR)
+skill (VARCHAR)
+code (VARCHAR)
+title (VARCHAR)
+paragraphs (INT)
+question_count (INT)
+status (VARCHAR)
 ```
 
 ### `student_stats` - Öğrenci İstatistikleri
 ```sql
-- student_id (INT, Primary Key)
-- country, field_of_study, platform_used, device_used
-- learning_mode, enrollment_date, daily_learning_hours
-- quizzes_attempted, assignments_submitted
-- course_completion_rate, satisfaction_score
+student_stats_id (INT, Primary Key, Auto Increment)
+student_id (INT, Foreign Key)
+country (VARCHAR)
+field_of_study (VARCHAR)
+platform_used (VARCHAR)
+device_used (VARCHAR)
+learning_mode (VARCHAR)
+enrollment_date (VARCHAR)
+daily_learning_hours (VARCHAR)
+quizzes_attempted (INT)
+assignments_submitted (INT)
+course_completion_rate (VARCHAR)
+satisfaction_score (INT)
 ```
 
 ---
@@ -226,24 +235,31 @@ GET /api/questions/{id}        # Soru detayları
 
 ---
 
-## ⚙️ Environment Variables
+## ⚙️ Environment Variables (bu dosyalari yerelde bilgisayrinizda olustrmaniz gerekiyor)
 
 **Backend (.env dosyası - backend-api/.env):**
 ```env
-DB_HOST=localhost           # veya Docker'da 'db'
-DB_PORT=3306
 DB_USER=root
-DB_PASSWORD=rootpassword
-DB_NAME=app_db
+DB_PASSWORD=!@#123qwert (kendi sifrenizi yazin)
+DB_HOST=localhost
+DB_NAME=career_academy
+DB_PORT=3306
 
-AUTH_EMAIL=test@example.com
+# Auth Credentials
+AUTH_EMAIL=johndoe@careeracademy.com
 AUTH_PASSWORD=password123
-ACCESS_TOKEN_EXPIRE_MINUTES=30
+
+# Security
+SECRET_KEY=9a2f6b8c4d2e1f0a3b5c7d9e8f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=43200
 ```
 
 **Frontend (.env dosyası - frontend-ui/.env):**
 ```env
-VITE_API_URL=http://localhost:3001
+# Auth Credentials
+AUTH_EMAIL=johndoe@careeracademy.com
+AUTH_PASSWORD=password123
 ```
 
 ---
