@@ -7,7 +7,6 @@ Bu depo, React (Vite) ile kodlanmış bir ön yüz ve Python FastAPI tabanlı bi
 
 ## 📋 Gereksinimler
 
-### Option 1: Yerel Kurulum (Kolay)
 - **Backend**: Python 3.9+
 - **Frontend**: Node.js **LTS** (18.x veya üstü) ve npm
 - **Database**: MySQL 8.0
@@ -15,9 +14,8 @@ Bu depo, React (Vite) ile kodlanmış bir ön yüz ve Python FastAPI tabanlı bi
 
 > **Not:** Yerel kurulumda backend ve frontend bağımlılıklarını tek komutla yüklemek için `requirements.txt` ve `npm install` kullanılır.
 
-### Option 2: Docker ile çalıştırma (Alternatif) 🐋
-- Docker Desktop
-- Docker Compose
+- **Docker Desktop** (opsiyonel)
+- **Docker Compose** (opsiyonel)
 
 ---
 ## ⚙️ Environment Variables (bu dosyalari yerelde bilgisayrinizda olustrmaniz gerekiyor)
