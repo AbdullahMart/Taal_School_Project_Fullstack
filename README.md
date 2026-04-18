@@ -318,5 +318,5 @@ Bu proje eğitim amaçlıdır.
 
 **Geliştirici**: Abdullah Mart
 
-Baliarilar dilerim... 🎓
+Basarilar dilerim... 🎓
 
