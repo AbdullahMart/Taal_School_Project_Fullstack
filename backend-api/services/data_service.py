@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models.models import Question, StudentStats, Student
+from models.models import  Question, Student, StudentStats
 from schemas.student import StudentCreate
 
 def get_questions(db: Session):
