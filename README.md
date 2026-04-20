@@ -165,6 +165,17 @@ Taal_School_Project_Fullstack/
 
 ## 📊 Veritabanı Tabloları
 
+### `users` - Kullanıcılar
+```sql
+id (INT, Primary Key)
+email (VARCHAR(255))
+hashed_password (VARCHAR(255))
+full_name (VARCHAR(255))
+is_active (TINYINT(1))
+created_at (DATETIME)
+reset_token (VARCHAR(255))
+```
+
 ### `students` - Öğrenci Bilgileri
 ```sql
 - student_id (INT, Primary Key)
