@@ -7,21 +7,85 @@ Bu depo, React (Vite) ile kodlanmış bir ön yüz ve Python FastAPI tabanlı bi
 
 ## 📋 Gereksinimler
 
-### Option 1: Docker ile çalıştırma (Önerilen) 🐋
-- Docker Desktop
-- Docker Compose
-
-### Option 2: Yerel kurulum
 - **Backend**: Python 3.9+
 - **Frontend**: Node.js **LTS** (18.x veya üstü) ve npm
 - **Database**: MySQL 8.0
 - **Git** (veya GitHub'dan ZIP ile indirme)
 
----
+> **Not:** Yerel kurulumda backend ve frontend bağımlılıklarını tek komutla yüklemek için `requirements.txt` ve `npm install` kullanılır.
 
+- **Docker Desktop** (opsiyonel)
+- **Docker Compose** (opsiyonel)
+
+---
+## ⚙️ Environment Variables (bu dosyalari yerelde bilgisayrinizda olustrmaniz gerekiyor)
+
+## Backend (.env dosyası - backend-api/.env):
+```env
+DB_USER=root
+DB_PASSWORD=!@#123qwert (kendi sifrenizi yazin)
+DB_HOST=localhost
+DB_NAME=career_academy
+DB_PORT=3306
+
+# Auth Credentials
+AUTH_EMAIL=johndoe@careeracademy.com
+AUTH_PASSWORD=password123
+
+# Security
+SECRET_KEY=9a2f6b8c4d2e1f0a3b5c7d9e8f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=43200
+```
+
+## Frontend (.env dosyası - frontend-ui/.env):
+```env
+# Auth Credentials
+AUTH_EMAIL=johndoe@careeracademy.com
+AUTH_PASSWORD=password123
+```
+
+---
 ## 🚀 Kurulum ve Çalıştırma
 
-### Option 1: Docker ile Kurulum (En Hızlı) 🐋
+### Option 1: Yerel Kurulum 👨‍💻
+
+1. **Repoyu İndirin:**
+```bash
+git clone https://github.com/AbdullahMart/Taal_School_Project_Fullstack.git
+cd Taal_School_Project_Fullstack
+```
+
+2. **Veritabanı Kurulumu:**
+   - MySQL'i başlatın (yerel kurulum yapılmış olmalı, veritabanı oluşturulmuş olmalı)
+   - Tabloları elle oluşturmanıza gerek yoktur. Backend ilk başlatıldığında eksik tablolar otomatik olarak oluşturulur.
+
+3. **Backend Kurulumu:**
+```bash
+cd backend-api
+python -m venv venv  # (sanal ortam)
+venv\Scripts\activate  # Windows
+pip install -r requirements.txt
+python main.py
+
+# veya
+source venv/bin/activate  # macOS/Linux
+pip install -r requirements.txt
+python main.py
+```
+
+4. **Frontend Kurulumu:**
+```bash
+cd frontend-ui
+npm install
+npm run dev
+```
+
+**Tarayıcıda açın:** http://localhost:5173
+
+---
+
+### Option 2: Docker ile Kurulum (Alternatif) 🐋
 
 1. **Repoyu indirin:**
 ```bash
@@ -36,7 +100,7 @@ DB_HOST=db
 DB_PORT=3306
 DB_USER=root
 DB_PASSWORD=rootpassword
-DB_NAME=app_db
+DB_NAME=career_academy
 ```
 
 3. **Docker Compose ile çalıştırın:**
@@ -45,77 +109,11 @@ docker-compose up --build
 ```
 
 4. **Uygulamaya erişin:**
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:3001
-- **MySQL**: localhost:3307 (host machine'den)
+   - **Frontend**: http://localhost:5173
+   - **Backend API**: http://localhost:3001
+   - **MySQL**: localhost:3307 (host machine'den)
 
 > Tüm servisler otomatik olarak başlatılacak ve birbirine bağlanacaktır.
-
----
-
-### Option 2: Yerel Kurulum 👨‍💻
-
-#### 1️⃣ Repoyu İndirme
-```bash
-git clone https://github.com/AbdullahMart/Taal_School_Project_Fullstack.git
-cd Taal_School_Project_Fullstack
-```
-
-#### 2️⃣ Veritabanı Kurulumu
-
-1. **MySQL'i başlatın** (yerel kurulum yapılmış olmalı)
-2. **Veritabanını oluşturun:**
-```bash
-mysql -u root -p < students_table.sql
-```
-
-3. **MySQL Workbench ile (Alternatif):**
-   - MySQL Workbench'i açın
-   - File → Open SQL Script
-   - `students_table.sql` dosyasını seçin
-   - Execute butonuna (⚡) basın
-
-#### 3️⃣ Backend (Python FastAPI) Kurulumu
-
-```bash
-cd backend-api
-
-# Python virtual environment oluşturun (önerilen)
-python -m venv venv
-
-# Virtual environment'i aktif edin
-# Windows:
-venv\Scripts\activate
-# macOS/Linux:
-source venv/bin/activate
-
-# Bağımlılıkları yükleyin
-pip install -r requirements.txt
-
-# Backend'i çalıştırın
-python main.py
-```
-
-**Başarılı ise göreceksiniz:**
-```
-INFO:     Uvicorn running on http://0.0.0.0:3001
-INFO:     Application startup complete
-```
-
-#### 4️⃣ Frontend (React + Vite) Kurulumu
-
-**Yeni terminal açın** (backend'i açık bırakın):
-```bash
-cd frontend-ui
-
-# Bağımlılıkları yükleyin
-npm install
-
-# Geliştirme sunucusunu başlatın
-npm run dev
-```
-
-**Tarayıcıda açın:** http://localhost:5173
 
 ---
 
@@ -167,6 +165,17 @@ Taal_School_Project_Fullstack/
 
 ## 📊 Veritabanı Tabloları
 
+### `users` - Kullanıcılar
+```sql
+id (INT, Primary Key)
+email (VARCHAR(255))
+hashed_password (VARCHAR(255))
+full_name (VARCHAR(255))
+is_active (TINYINT(1))
+created_at (DATETIME)
+reset_token (VARCHAR(255))
+```
+
 ### `students` - Öğrenci Bilgileri
 ```sql
 - student_id (INT, Primary Key)
@@ -181,24 +190,33 @@ Taal_School_Project_Fullstack/
 
 ### `app_question_body` - Sınav Soruları
 ```sql
-- id (INT, Primary Key)
-- created_at (DATETIME)
-- level (VARCHAR)
-- skill (VARCHAR)
-- code (VARCHAR)
-- title (VARCHAR)
-- paragraphs (INT)
-- question_count (INT)
-- status (VARCHAR)
+question_id (INT, Primary Key)
+student_id (INT, Foreign Key)
+created_at (DATETIME)
+level (VARCHAR)
+skill (VARCHAR)
+code (VARCHAR)
+title (VARCHAR)
+paragraphs (INT)
+question_count (INT)
+status (VARCHAR)
 ```
 
 ### `student_stats` - Öğrenci İstatistikleri
 ```sql
-- student_id (INT, Primary Key)
-- country, field_of_study, platform_used, device_used
-- learning_mode, enrollment_date, daily_learning_hours
-- quizzes_attempted, assignments_submitted
-- course_completion_rate, satisfaction_score
+student_stats_id (INT, Primary Key, Auto Increment)
+student_id (INT, Foreign Key)
+country (VARCHAR)
+field_of_study (VARCHAR)
+platform_used (VARCHAR)
+device_used (VARCHAR)
+learning_mode (VARCHAR)
+enrollment_date (VARCHAR)
+daily_learning_hours (VARCHAR)
+quizzes_attempted (INT)
+assignments_submitted (INT)
+course_completion_rate (VARCHAR)
+satisfaction_score (INT)
 ```
 
 ---
@@ -226,27 +244,7 @@ GET /api/questions/{id}        # Soru detayları
 
 ---
 
-## ⚙️ Environment Variables
 
-**Backend (.env dosyası - backend-api/.env):**
-```env
-DB_HOST=localhost           # veya Docker'da 'db'
-DB_PORT=3306
-DB_USER=root
-DB_PASSWORD=rootpassword
-DB_NAME=app_db
-
-AUTH_EMAIL=test@example.com
-AUTH_PASSWORD=password123
-ACCESS_TOKEN_EXPIRE_MINUTES=30
-```
-
-**Frontend (.env dosyası - frontend-ui/.env):**
-```env
-VITE_API_URL=http://localhost:3001
-```
-
----
 
 ## ⚠️ Yaygın Sorunlar ve Çözümleri
 
@@ -329,5 +327,5 @@ Bu proje eğitim amaçlıdır.
 
 **Geliştirici**: Abdullah Mart
 
-Baliarilar dilerim... 🎓
+Basarilar dilerim... 🎓
 
